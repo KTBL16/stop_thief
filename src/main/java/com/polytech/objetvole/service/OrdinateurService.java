@@ -1,0 +1,68 @@
+package com.polytech.objetvole.service;
+
+import com.polytech.objetvole.database.AddOrdinateur;
+import com.polytech.objetvole.database.AddPersonne;
+import com.polytech.objetvole.database.FindOrdinateur;
+import com.polytech.objetvole.principal.MyObjet;
+import com.polytech.objetvole.principal.Ordinateur;
+import com.polytech.objetvole.principal.Personne;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class OrdinateurService implements IObjetService
+{
+    AddPersonne ADDP = new AddPersonne();
+    AddOrdinateur ADDO = new AddOrdinateur();
+    FindOrdinateur FIND = new FindOrdinateur();
+    Personne proprietaire = new Personne();
+    Ordinateur ordi = new Ordinateur();
+    Scanner input = new Scanner(System.in);
+
+    @Override
+    public void declarerObjetVole()
+    {
+        System.out.println("information de l'utilisateur(nom, prenomn email, numtel et adresse)");
+        proprietaire.setNom(input.nextLine());
+        proprietaire.setPrenom(input.nextLine());
+        proprietaire.setEmail(input.nextLine());
+        proprietaire.setNumTel(input.nextLine());
+        proprietaire.setAdresse(input.nextLine());
+
+        ADDP.add(proprietaire);
+
+        System.out.println("information de l'ordinateur(adresse mac, nom, catégorie, version");
+        ordi.setAdresse_Mac(input.nextLine());
+        ordi.setNom(input.nextLine());
+        ordi.setCategorie(input.nextLine());
+        ordi.setVersion(input.nextLine());
+
+        ADDO.add(ordi);
+
+    }
+
+    @Override
+    public void estObjetVole(String identifiant) {
+        System.out.println("identifiant de l'objet");
+        identifiant = input.nextLine();
+        try (ResultSet resultat = FIND.find(identifiant))
+        {
+            resultat.next();
+            if (resultat == null)
+            {
+                System.out.println("false");
+            }else{
+                System.out.println("true");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void contacterProprietaire(MyObjet objet, String message) {
+        System.out.println("oui oui");
+
+    }
+}
